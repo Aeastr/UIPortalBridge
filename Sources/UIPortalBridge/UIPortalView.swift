@@ -116,13 +116,9 @@ public class UIPortalView: UIView {
     }
 
     private func setupPortalView() {
-        // Obfuscated class name using compile-time macro.
-        // The #Obfuscate macro converts to a base64-encoded byte array at compile-time,
-        // then decodes at runtime to prevent direct string matching in the binary.
         let className = #Obfuscate("_UIPortalView")
 
         guard let portalClass = NSClassFromString(className) as? UIView.Type else {
-            print("⚠️ UIPortalBridge: Private portal view class not available on iOS \(UIDevice.current.systemVersion)")
             isAvailable = false
 
             let fallbackView = UIView(frame: bounds)
@@ -139,13 +135,18 @@ public class UIPortalView: UIView {
         isAvailable = true
 
         // Set default properties
-        portal.setValue(true, forKey: "matchesAlpha")
-        portal.setValue(true, forKey: "matchesTransform")
-        portal.setValue(true, forKey: "matchesPosition")
+        portal.setValue(matchesAlpha, forKey: "matchesAlpha")
+        portal.setValue(matchesTransform, forKey: "matchesTransform")
+        portal.setValue(matchesPosition, forKey: "matchesPosition")
     }
 
     private func updateSourceView() {
         guard isAvailable else { return }
+
         portalView?.setValue(sourceView, forKey: "sourceView")
+        portalView?.setValue(hidesSourceView, forKey: "hidesSourceView")
+        portalView?.setValue(matchesAlpha, forKey: "matchesAlpha")
+        portalView?.setValue(matchesTransform, forKey: "matchesTransform")
+        portalView?.setValue(matchesPosition, forKey: "matchesPosition")
     }
 }
